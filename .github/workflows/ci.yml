@@ -27,6 +27,10 @@ jobs:
           cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile
+
+      - run: pnpm exec nx reset
+        name: Reset Nx dependency graph due to changes being stored in pnpm cache
+
       - uses: nrwl/nx-set-shas@v4
 
       # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
