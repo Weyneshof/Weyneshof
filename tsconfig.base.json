@@ -20,16 +20,16 @@
     "baseUrl": ".",
     "paths": {
       "@weyneshof/ui": [
-        "libs/ui/src/index.ts"
+        "libs/frontend/ui/src/index.ts"
       ],
       "@weyneshof/ui/*": [
-        "libs/libs/ui/src/*"
+        "libs/frontend/ui/src/*"
       ],
       "@weyneshof/utils": [
-        "libs/utils/src/index.ts"
+        "libs/frontend/utils/src/index.ts"
       ],
       "@weyneshof/utils/*": [
-        "libs/libs/utils/src/*"
+        "libs/forntend/utils/src/*"
       ]
     }
   },
