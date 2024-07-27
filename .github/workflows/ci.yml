@@ -26,6 +26,10 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
+      # setup dotnet from global.json
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+
       - run: pnpm install --frozen-lockfile
 
       - uses: nrwl/nx-set-shas@v4
