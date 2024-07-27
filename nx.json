@@ -6,11 +6,31 @@
       "sharedGlobals"
     ],
     "production": [
-      "default"
+      "default",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.js"
     ],
     "sharedGlobals": [
       "{workspaceRoot}/.github/workflows/ci.yml"
     ]
   },
-  "nxCloudAccessToken": "ZWIxYzE2NTQtZTE1Mi00MzM3LTliM2MtNDUzZDM4YjA3ZGNmfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "ZWIxYzE2NTQtZTE1Mi00MzM3LTliM2MtNDUzZDM4YjA3ZGNmfHJlYWQtd3JpdGU=",
+  "plugins": [
+    {
+      "plugin": "@nx/next/plugin",
+      "options": {
+        "startTargetName": "start",
+        "buildTargetName": "build",
+        "devTargetName": "dev",
+        "serveStaticTargetName": "serve-static"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    "@nx-dotnet/core"
+  ]
 }
