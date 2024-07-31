@@ -39,7 +39,7 @@
     "jest.config.ts",
     "tailwind.config.js",
     "**/*.spec.ts",
-    "**/*.test.ts"
+    "**/*.test.ts",
     "postcss.config.js"
   ]
 }
