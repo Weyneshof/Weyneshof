@@ -6,7 +6,7 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development'),
-    VERCEL_URL: z.string().url().optional().default('https://weyneshof.be'),
+    VERCEL_URL: z.string().optional(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
     POSTGRES_URL: z.string(),
