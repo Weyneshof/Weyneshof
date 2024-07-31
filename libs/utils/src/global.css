@@ -1,0 +1,61 @@
+/**
+ * Don't forget to update your APPs global.css to include this file!
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --orange: 38 96% 55%;
+    --orange-foreground: 38 9.6% 5.5%;
+    --blue: 196 72% 46%;
+    --blue-foreground: 196 7.2% 5.5%;
+    --green: 88 64% 50%;
+    --green-foreground: 88 6.4% 5%;
+    --red: -9 78% 62%;
+    --red-foreground: -9 7.8% 6.2%;
+    --light-gray: 0, 6%, 93%;
+    --dark-gray: 60, 1%, 39%;
+
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: var(--orange);
+    --primary-foreground: var(--orange-foreground);
+
+    --secondary: var(--blue);
+    --secondary-foreground: var(--blue-foreground);
+
+    --muted: var(--dark-gray);
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: var(--green);
+    --accent-foreground: var(--green-foreground);
+
+    --destructive: var(--red);
+    --destructive-foreground: var(--red-foreground);
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}

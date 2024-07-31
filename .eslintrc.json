@@ -4,7 +4,11 @@
     "**/*"
   ],
   "plugins": [
-    "@nx"
+    "@nx",
+    "drizzle",
+    "jsx-a11y",
+    "prettier",
+    "@typescript-eslint"
   ],
   "overrides": [
     {
@@ -13,6 +17,9 @@
         "*.tsx",
         "*.js",
         "*.jsx"
+      ],
+      "extends":[
+        "prettier"
       ],
       "rules": {
         "@nx/enforce-module-boundaries": [
@@ -38,8 +45,10 @@
         "*.tsx"
       ],
       "extends": [
-        "plugin:@nx/typescript"
+        "plugin:@nx/typescript",
+        "plugin:drizzle/all"
       ],
+      "parser": "@typescript-eslint/parser",
       "rules": {}
     },
     {

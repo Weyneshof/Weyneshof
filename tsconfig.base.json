@@ -3,8 +3,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
-    "declaration": true,
-    "composite": true,
+    "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -19,22 +18,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@weyneshof/ui": [
-        "libs/frontend/ui/src/index.ts"
-      ],
-      "@weyneshof/ui/*": [
-        "libs/frontend/ui/src/*"
-      ],
-      "@weyneshof/utils": [
-        "libs/frontend/utils/src/index.ts"
-      ],
-      "@weyneshof/utils/*": [
-        "libs/forntend/utils/src/*"
-      ]
+      "@weyneshof/website/*": ["apps/frontend/website/src/*"],
+      "@weyneshof/ui": ["libs/ui/src/index.ts"],
+      "@weyneshof/ui/*": ["libs/ui/src/*"],
+      "@weyneshof/utils": ["libs/utils/src/index.ts"],
+      "@weyneshof/utils/*": ["libs/utils/src/*"],
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
