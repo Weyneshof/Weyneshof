@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "reset": "nx reset",
-    "prepare": "nx g @nx-dotnet/core:restore"
+    "//prepare": "nx g @nx-dotnet/core:restore"
   },
   "private": true,
   "devDependencies": {
