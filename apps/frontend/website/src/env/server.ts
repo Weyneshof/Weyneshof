@@ -18,6 +18,8 @@ export const env = createEnv({
     GCP_WORKLOAD_IDENTITY_POOL_ID: z.string().optional(),
     GCP_WORKLOAD_IDENTITY_POOL_PROVIDER_ID: z.string().optional(),
     GCP_SERVICE_ACCOUNT_FILE: z.string().optional(),
+    // gmail
+    GMAIL_USER: z.string(),
   },
 
   runtimeEnv: {
@@ -34,6 +36,7 @@ export const env = createEnv({
     GCP_WORKLOAD_IDENTITY_POOL_PROVIDER_ID:
       process.env.GCP_WORKLOAD_IDENTITY_POOL_PROVIDER_ID,
     GCP_SERVICE_ACCOUNT_FILE: process.env.GCP_SERVICE_ACCOUNT_FILE,
+    GMAIL_USER: process.env.GMAIL_USER,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
