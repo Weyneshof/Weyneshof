@@ -47,3 +47,4 @@ out
 
 .env*
 
+/apps/frontend/website/serviceaccount.json
