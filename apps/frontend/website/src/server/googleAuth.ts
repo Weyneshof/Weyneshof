@@ -11,6 +11,12 @@ import { env } from '../env/server';
 import { JSONClient } from 'google-auth-library/build/src/auth/googleauth';
 import { readFileSync } from 'fs';
 
+async function tokenLogProxy(): Promise<string> {
+  const token = await getVercelOidcToken();
+  console.warn('vercel oicd token %s DISABLE AFTER', token);
+  return token;
+}
+
 export const baseAuthClient = ExternalAccountClient.fromJSON({
   type: 'external_account',
   audience: `//iam.googleapis.com/projects/${env.GCP_PROJECT_NUMBER}/locations/global/workloadIdentityPools/${env.GCP_WORKLOAD_IDENTITY_POOL_ID}/providers/${env.GCP_WORKLOAD_IDENTITY_POOL_PROVIDER_ID}`,
@@ -19,7 +25,7 @@ export const baseAuthClient = ExternalAccountClient.fromJSON({
   service_account_impersonation_url: `https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${env.GCP_SERVICE_ACCOUNT_EMAIL}:generateAccessToken`,
   subject_token_supplier: {
     // Use the Vercel OIDC token as the subject token
-    getSubjectToken: getVercelOidcToken,
+    getSubjectToken: tokenLogProxy,
   },
 });
 
