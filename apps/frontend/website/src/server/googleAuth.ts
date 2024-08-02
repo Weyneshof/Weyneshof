@@ -3,19 +3,10 @@ import {
   ExternalAccountClient,
   AuthClient,
   GoogleAuth,
-  OAuth2Client,
-  JWT,
-  Impersonated,
 } from 'google-auth-library';
 import { env } from '../env/server';
 import { JSONClient } from 'google-auth-library/build/src/auth/googleauth';
-import { readFileSync } from 'fs';
-
-async function tokenLogProxy(): Promise<string> {
-  const token = await getVercelOidcToken();
-  console.warn('vercel oicd token %s DISABLE AFTER', token);
-  return token;
-}
+import * as process from 'node:process';
 
 export const baseAuthClient = ExternalAccountClient.fromJSON({
   type: 'external_account',
@@ -25,8 +16,12 @@ export const baseAuthClient = ExternalAccountClient.fromJSON({
   service_account_impersonation_url: `https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${env.GCP_SERVICE_ACCOUNT_EMAIL}:generateAccessToken`,
   subject_token_supplier: {
     // Use the Vercel OIDC token as the subject token
-    getSubjectToken: tokenLogProxy,
+    getSubjectToken:
+      env.NODE_ENV === 'development'
+        ? async () => process.env.VERCEL_OICD_TOKEN ?? ''
+        : getVercelOidcToken,
   },
+  scopes: ['https://www.googleapis.com/auth/gmail.send'], // Ensure this scope is included
 });
 
 export function getClient(): AuthClient | GoogleAuth<JSONClient> {
@@ -45,35 +40,4 @@ export function getClient(): AuthClient | GoogleAuth<JSONClient> {
   return baseAuthClient;
 }
 
-export function getImpersonationClient(
-  subject: string,
-  scopes: string[],
-  delegates?: string,
-): OAuth2Client {
-  if (env.NODE_ENV === 'development') {
-    if (env.GCP_SERVICE_ACCOUNT_FILE === undefined)
-      throw new Error(
-        'GCP_SERVICE_ACCOUNT_FILE is not defined this should only ever happen in development if no service account file is provided',
-      );
-    const jsonServiceAccount = readFileSync(
-      env.GCP_SERVICE_ACCOUNT_FILE,
-      'utf-8',
-    );
-    const serviceAccount = JSON.parse(jsonServiceAccount);
-
-    return new JWT({
-      subject,
-      email: serviceAccount.client_email,
-      key: serviceAccount.private_key,
-      scopes,
-    });
-  }
-
-  return new Impersonated({
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    sourceClient: baseAuthClient!,
-    targetPrincipal: subject,
-    delegates: [],
-    targetScopes: scopes,
-  });
-}
+// impersonate real user for sending email using external account

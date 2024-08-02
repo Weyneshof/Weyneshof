@@ -1,32 +1,35 @@
 import { gmail } from '@googleapis/gmail';
-import { getImpersonationClient } from './googleAuth';
+import { baseAuthClient } from './googleAuth';
 import { env } from '../env/server';
+import { GoogleAuth } from 'google-auth-library';
+
+const auth = new GoogleAuth({
+  scopes: ['https://www.googleapis.com/auth/gmail.send'],
+  authClient: baseAuthClient!,
+  clientOptions: {
+    subject: env.GMAIL_USER,
+  },
+});
 
 export const gmailClient = gmail({
-  auth: getImpersonationClient('lisa@weyneshof.be', [
-    'https://www.googleapis.com/auth/gmail.send',
-  ]),
+  auth: auth!,
   version: 'v1',
 });
 
 export async function sendEmail(to: string, subject: string, message: string) {
   const emailLines = [
     `From: ${env.GMAIL_USER}`,
-    'To: lisa@scheers.tech',
+    `To: ${to}`,
     'Content-type: text/html;charset=iso-8859-1',
     'MIME-Version: 1.0',
     `Subject: ${subject}`,
     '',
-    `This is a test email from env ${process.env.NODE_ENV}`,
+    `${message}`,
   ];
 
   const email = emailLines.join('\r\n').trim();
   const base64Email = Buffer.from(email).toString('base64');
 
-  if (env.NODE_ENV === 'development') {
-    console.warn('NODE_TLS_REJECT_UNAUTHORIZED is set to 0 in development');
-    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-  }
   const response = await gmailClient.users.messages.send(
     {
       userId: 'me',
