@@ -14,7 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
-    Passkey,
+    ...(env.AUTH_ENABLE_WEB_AUTHN ? [Passkey] : []),
   ],
 
   secret: env.AUTH_SECRET,
@@ -26,6 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     verificationTokensTable: schema.verificationTokens,
   }),
   experimental: {
-    enableWebAuthn: true,
+    enableWebAuthn: env.AUTH_ENABLE_WEB_AUTHN,
   },
+  debug: env.AUTH_DEBUG,
 });
