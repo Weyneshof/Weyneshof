@@ -1,0 +1,73 @@
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run every day at midnight
+  workflow_dispatch:
+name: Migrate Nx
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: nx migrate latest
+      - name: check for changes and set output
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+        id: check
+      # if there are changes pnpm install with no frozen lockfile
+      - run: pnpm install --frozen-lockfile
+        if: steps.check.outputs.changed == 'true'
+      # check if there is a migrations file and run migration script
+      - run: |
+          if [ -f "migrations.json" ]; then
+              nx migrate --run-migrations=migrations.json
+              rm migrations.json
+          fi
+        continue-on-error: true
+      - run: git add .
+      # check if there are changes and set output
+      - name: check for changes and set output
+        run: |
+          if git diff --quiet; then
+              echo "changed=false" >> $GITHUB_OUTPUT
+          else
+              echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+          id: check
+      # check current nx version in package.json
+      - name: check nx version
+        run: |
+          NX_VERSION=$(pnpm exec nx -- version)
+          echo "NX_VERSION=$NX_VERSION" >> $GITHUB_OUTPUT
+      # commit changes
+      - name: commit changes
+        run: |
+          git config --local user.email "gitbot@weyneshof.be"
+          git config --local user.name "gitbot"
+          git branch "migrate-nx"
+          git checkout "migrate-nx"
+          git commit -m "chore: migrate to latest Nx version"
+          # push changes
+          git push origin "migrate-nx" --force # force push to overwrite the branch
+          # create pull request if not already exists
+          gh pr create --title "chore: migrate to latest Nx version" --body "This PR migrates the Nx version to the latest version" --base main --head migrate-nx
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
