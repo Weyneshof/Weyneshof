@@ -4,7 +4,7 @@ import { z } from 'zod';
 export const env = createEnv({
   server: {
     NODE_ENV: z
-      .enum(['development', 'test', 'production'])
+      .enum(['development', 'preview', 'test', 'production'])
       .default('development'),
     VERCEL_URL: z.string().optional(),
     GOOGLE_CLIENT_ID: z.string(),
