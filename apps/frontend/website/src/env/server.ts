@@ -13,6 +13,10 @@ export const env = createEnv({
     AUTH_SECRET: z.string(),
     RECAPTCHA_SECRET_KEY: z.string(),
     RECAPTCHA_SITE_KEY: z.string(),
+    RECAPTCHA_DISABLE: z
+      .string()
+      .default('false')
+      .transform((v) => v === 'true' || v === '1'),
     AUTH_DEBUG: z
       .string()
       .default('false')
@@ -35,6 +39,7 @@ export const env = createEnv({
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
     AUTH_SENDER_EMAIL: process.env.AUTH_SENDER_EMAIL,
     AUTH_SENDGRID_TEMPLATE_ID: process.env.AUTH_SENDGRID_TEMPLATE_ID,
+    RECAPTCHA_DISABLE: process.env.RECAPTCHA_DISABLE,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

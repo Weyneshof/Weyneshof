@@ -40,7 +40,7 @@ export default async function loginPage(props: {
         <p className="text-muted-foreground px-8 text-center text-sm">
           door te clicken op inloggen ga je accoord met onze{' '}
           <Link
-            href="/privacy"
+            href="/todo"
             className="hover:text-primary underline underline-offset-4"
           >
             Voorwaarden en Privacybeleid

@@ -16,6 +16,11 @@ export async function verifyCaptcha(
   action: string,
   score = 0.5,
 ) {
+  if (env.RECAPTCHA_DISABLE) {
+    console.warn('Recaptcha is disabled');
+    return;
+  }
+
   const verification = await fetch<RecaptchaResponse>(recaptchaVerifyUrl, {
     method: 'POST',
     headers: {

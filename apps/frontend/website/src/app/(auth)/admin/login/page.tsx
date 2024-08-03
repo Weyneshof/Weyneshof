@@ -6,9 +6,7 @@ import { auth } from '../../../../server/auth';
 import { subtitleFont, titleFont } from '@weyneshof/ui/fonts';
 import Passkey from '../../_components/Passkey';
 
-export default async function loginPage(props: {
-  searchParams?: { url?: string };
-}) {
+export default async function loginPage() {
   const session = await auth();
 
   if (session) {
@@ -55,7 +53,7 @@ export default async function loginPage(props: {
         <p className="text-muted-foreground px-8 text-center text-sm">
           door te clicken op inloggen ga je accoord met onze{' '}
           <Link
-            href="/privacy"
+            href="/todo"
             className="hover:text-primary underline underline-offset-4"
           >
             Voorwaarden en Privacybeleid
