@@ -2,10 +2,23 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from '../../utils/src';
+import { cn } from '@weyneshof/utils';
+
+import { Gorditas } from 'next/font/google';
+
+const font = Gorditas({
+  display: 'swap',
+  weight: '400',
+  style: 'normal',
+  preload: true,
+  subsets: ['latin'],
+});
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  cn(
+    font.className,
+    'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  ),
   {
     variants: {
       variant: {
@@ -21,8 +34,11 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-10 px-4 py-2',
+        'default-rounded': 'h-10 rounded-full px-4 py-2',
         sm: 'h-9 rounded-md px-3',
+        'sm-rounded': 'h-9 rounded-full px-3',
         lg: 'h-11 rounded-md px-8',
+        'lg-rounded': 'h-11 rounded-full px-8',
         icon: 'h-10 w-10',
       },
     },
