@@ -24,6 +24,7 @@ export const env = createEnv({
     SENDGRID_API_KEY: z.string(),
     AUTH_SENDER_EMAIL: z.string(),
     AUTH_SENDGRID_TEMPLATE_ID: z.string(),
+    VERCEL_GIT_COMMIT_REF: z.string().optional(),
   },
 
   runtimeEnv: {
@@ -40,6 +41,7 @@ export const env = createEnv({
     AUTH_SENDER_EMAIL: process.env.AUTH_SENDER_EMAIL,
     AUTH_SENDGRID_TEMPLATE_ID: process.env.AUTH_SENDGRID_TEMPLATE_ID,
     RECAPTCHA_DISABLE: process.env.RECAPTCHA_DISABLE,
+    VERCEL_GIT_COMMIT_REF: process.env.VERCEL_GIT_COMMIT_REF,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

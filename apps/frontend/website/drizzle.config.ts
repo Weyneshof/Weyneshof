@@ -1,14 +1,18 @@
 import { defineConfig } from 'drizzle-kit';
 import { env } from './src/env/server';
 
-const schema = __dirname + '/src/server/db/schema.ts';
+import * as schema from './src/server/db/schema';
+
+const schemaStr = __dirname + '/src/server/db/schema.ts';
+
+console.log(env.VERCEL_GIT_COMMIT_REF);
 
 export default defineConfig({
   dialect: 'postgresql', // "mysql" | "sqlite" | "postgresql"
-  schema: schema,
+  schema: schemaStr,
   dbCredentials: {
     url: env.POSTGRES_URL,
   },
-  tablesFilter: [`w_web_${env.NODE_ENV.substring(0, 3)}_*`],
+  tablesFilter: [schema.nameCreator('*')],
   out: './drizzle',
 });
