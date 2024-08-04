@@ -1,0 +1,29 @@
+on:
+  pull_request:
+    types: [closed]
+jobs:
+  pr-close:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      # Cache node_modules
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec nx run-many --projects=tag:drizzle-db -t db-drop
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          # GITHUB_HEAD_REF
+          VERCEL_GIT_COMMIT_REF: ${{ github.event.pull_request.head.ref }}
+          SKIP_ENV_VALIDATION: true
+          # if main branch, set NODE_ENV to production
+          NODE_ENV: ${{ github.event_name == 'push' && 'production' || 'preview' }}
+

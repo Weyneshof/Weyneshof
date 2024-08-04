@@ -2,10 +2,11 @@
 // The config you add here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from '@sentry/nextjs';
+import { env } from './src/env/client';
 
 Sentry.init({
-  dsn: "https://a6e51d068899a272c2b813a54aa14f67@o4507256284971008.ingest.de.sentry.io/4507500690735184",
+  dsn: 'https://a6e51d068899a272c2b813a54aa14f67@o4507256284971008.ingest.de.sentry.io/4507500690735184',
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1,
@@ -27,4 +28,6 @@ Sentry.init({
       blockAllMedia: true,
     }),
   ],
+
+  enabled: !env.NEXT_PUBLIC_DISABLE_SENTRY,
 });

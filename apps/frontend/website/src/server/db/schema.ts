@@ -9,9 +9,21 @@ import {
 import { env } from '../../env/server';
 import { AdapterAccountType } from '@auth/core/adapters';
 
-export const createTable = pgTableCreator(
-  (name) => `w_web_${env.NODE_ENV.substring(0, 3)}_${name}`,
-);
+export function nameCreator(name: string) {
+  if (env.NODE_ENV === 'production') {
+    return `prod_${name}`;
+  } else if (env.NODE_ENV === 'development') {
+    return `dev_${name}`;
+  }
+  const prefix = env.VERCEL_GIT_COMMIT_REF?.replace('-', '_').replace(
+    /\//g,
+    '_',
+  );
+
+  return `prev_${prefix}_${name}`;
+}
+
+export const createTable = pgTableCreator(nameCreator);
 
 export const users = createTable('user', {
   id: text('id')
